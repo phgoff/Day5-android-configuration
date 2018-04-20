@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Day5-android</string>
+    <string name="hello_world_portrait">hello_world_portrait</string>
+    <string name="submit">submit</string>
+</resources>
