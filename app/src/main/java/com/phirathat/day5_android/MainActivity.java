@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int Activity_CODE = 1;
     NotificationCompat.Builder mBuilder;
     NotificationManager mNotifyMgr;
+    NotificationManager nMgr;
+    private Button btnremove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
                 tvhello = findViewById(R.id.tv_hello);
         btnsubmit = findViewById(R.id.btnsubmit);
+        btnremove = findViewById(R.id.btnremove);
         edt1 = findViewById(R.id.edt1);
         intent = new Intent(this,SecondActivity.class);
 
@@ -58,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"You have new Message",Toast.LENGTH_LONG).show();
             }
         });
+        btnremove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ns = Context.NOTIFICATION_SERVICE;
+                nMgr = (NotificationManager) getApplicationContext().getSystemService(ns);
+                nMgr.cancel(1);
+                Toast.makeText(MainActivity.this,"Deleted Message",Toast.LENGTH_LONG).show();
+            }
+        });
 
         //Notification Builder
         mBuilder =
@@ -78,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
                         // then the current one will update it with the latest intent
                         PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
-
-
 
     }
 
