@@ -2,8 +2,13 @@ package com.phirathat.day5_android;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText edt1;
     Intent intent;
     public static final int Activity_CODE = 1;
-
+    NotificationCompat.Builder mBuilder;
+    NotificationManager mNotifyMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        tvhello = findViewById(R.id.tv_hello);
+                tvhello = findViewById(R.id.tv_hello);
         btnsubmit = findViewById(R.id.btnsubmit);
         edt1 = findViewById(R.id.edt1);
         intent = new Intent(this,SecondActivity.class);
@@ -42,12 +48,41 @@ public class MainActivity extends AppCompatActivity {
                 tvhello.setText("Counter: "+ counter);
 
 
-                startActivityForResult(intent,Activity_CODE);
+                //startActivityForResult(intent,Activity_CODE);
                 //alert(v);
                 //alertCustomDialog(v);
+                mNotifyMgr =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+// Builds the notification and issues it.
+                mNotifyMgr.notify(1, mBuilder.build());
+                Toast.makeText(MainActivity.this,"You have new Message",Toast.LENGTH_LONG).show();
             }
         });
+
+        //Notification Builder
+        mBuilder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_stat_name_noti)
+                        .setContentTitle("New notification")
+                        .setContentText("Open Google website!");
+
+        Intent resultIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.google.com/"));
+        //  Define notification action
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,   // context
+                        0,      // requestCode (defined PendingIntent id)
+                        resultIntent,
+                        // if a previous PendingIntent already exists,
+                        // then the current one will update it with the latest intent
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+
+
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
